@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { StatCard } from "@/components/dashboard/StatCard";
 
 export default async function DashboardPage() {
   const project = await prisma.project.findUnique({
@@ -49,20 +50,9 @@ export default async function DashboardPage() {
       </div>
 
       <section className="mt-8 grid gap-4 md:grid-cols-3">
-        <div className="rounded-xl border p-5 shadow-sm">
-          <p className="text-sm text-gray-500">Total Events</p>
-          <p className="mt-2 text-4xl font-bold">{totalEvents}</p>
-        </div>
-
-        <div className="rounded-xl border p-5 shadow-sm">
-          <p className="text-sm text-gray-500">Unique Players</p>
-          <p className="mt-2 text-4xl font-bold">{uniquePlayers}</p>
-        </div>
-
-        <div className="rounded-xl border p-5 shadow-sm">
-          <p className="text-sm text-gray-500">Sessions</p>
-          <p className="mt-2 text-4xl font-bold">{totalSessions}</p>
-        </div>
+        <StatCard label="Total Events" value={totalEvents} />
+        <StatCard label="Unique Players" value={uniquePlayers} />
+        <StatCard label="Sessions" value={totalSessions} />
       </section>
 
       <section className="mt-8 rounded-xl border p-5 shadow-sm">
