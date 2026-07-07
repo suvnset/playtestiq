@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { StatCard } from "@/components/dashboard/StatCard";
+import { TopEventsChart } from "@/components/dashboard/TopEventsChart";
 
 export default async function DashboardPage() {
   const project = await prisma.project.findUnique({
@@ -42,6 +43,11 @@ export default async function DashboardPage() {
     take: 10,
   });
 
+  const chartData = topEvents.map((event) => ({
+    eventName: event.eventName,
+    count: event._count.eventName,
+  }));
+
   return (
     <main className="min-h-screen bg-white p-8 text-black">
       <div>
@@ -57,19 +63,8 @@ export default async function DashboardPage() {
 
       <section className="mt-8 rounded-xl border p-5 shadow-sm">
         <h2 className="text-xl font-semibold">Top Events</h2>
-
-        <div className="mt-4 space-y-3">
-          {topEvents.map((event) => (
-            <div
-              key={event.eventName}
-              className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
-            >
-              <span className="font-medium">{event.eventName}</span>
-              <span className="rounded-full bg-black px-3 py-1 text-sm text-white">
-                {event._count.eventName}
-              </span>
-            </div>
-          ))}
+        <div className="mt-4">
+          <TopEventsChart data={chartData} />
         </div>
       </section>
     </main>
